@@ -16,8 +16,5 @@ jobs:
             HOSTNAME: ${{secrets.SSH_HOST}}
             USER_NAME: ${{secrets.USER_NAME}}
         run: |
-            pwd
-            echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-            ls -la
-            echo "Syncing with $USER_NAME:$HOSTNAME"
-            rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" -i private_key --progress ./* ${USER_NAME}@${HOSTNAME}:~/ec2-deploy-express/*
+            echo "$PRIVATE_KEY" > ../private_key && chmod 400 ../private_key
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" -i ../private_key --progress ./* ${USER_NAME}@${HOSTNAME}:~/ec2-deploy-express/*
