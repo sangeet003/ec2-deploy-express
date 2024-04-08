@@ -13,6 +13,8 @@ jobs:
       - name: Run command
         env:
             PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME: ${{secrets.SSH_HOST}}
+            USER_NAME: ${{secrets.USER_NAME}}
         run: |
-            ls -la
-            echo "$PRIVATE_KEY"
+            echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+            rsync -avz -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" -i private_key --progress ./* ${USER_NAME}@${HOSTNAME}:~/ec2-deploy-express/*
